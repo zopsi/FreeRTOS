@@ -1,0 +1,46 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup cross build environment
+      run: |
+        echo "Downloading ARM Cross Compiler"
+        wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/RC2.1/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2 >/dev/null 2>&1
+        echo "Extracting ARM Cross Compiler"
+        tar -xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+        echo "Set Environment Variables"
+        export ARM_GCC_TOOLCHAIN="${PWD}/gcc-arm-none-eabi-9-2019-q4-major/bin"
+        export PATH="$ARM_GCC_TOOLCHAIN:$PATH"
+        echo "::set-env name=ARM_GCC_TOOLCHAIN::$ARM_GCC_TOOLCHAIN"
+    - name: setup dependencies
+      run: |
+        # walk one level up
+        cd ..
+        git clone https://github.com/timschneider/CoreNG.git
+        cd CoreNG
+        git checkout origin/dev
+        cd ./variants/duetNG/build_gcc
+        echo "Make CoreNG"
+        make >/dev/null 2>&1
+        echo "Finished CoreNG"
+        cd ../../../..
+        ls -la
+        cd FreeRTOS
+    - name: make
+      working-directory: ./variants/duetNG/build_gcc 
+      run: |
+        echo "ARM Cross Compiler: $ARM_GCC_TOOLCHAIN"
+        make
+    - name: upload libraries
+      uses: actions/upload-artifact@v1
+      with:
+        name: SAM4E-libFreeRTOS
+        path: SAM4E/libFreeRTOS.a
+        
