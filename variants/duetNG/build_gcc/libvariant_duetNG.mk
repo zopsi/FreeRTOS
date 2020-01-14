@@ -83,7 +83,7 @@ OUTPUT_OBJ=release
 OUTPUT_LIB_POSTFIX=rel
 endif
 
-OUTPUT_LIB=$(LIBNAME).a
+OUTPUT_LIB= $(LIBNAME).a
 OUTPUT_PATH=$(OUTPUT_OBJ)_$(VARIANT)
 
 #-------------------------------------------------------------------------------
@@ -98,24 +98,21 @@ C_SRC := $(call rwildcard,../../../src/,*.c)
 
 # during development, remove some files
 C_OBJ_FILTER=
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM0/port.c
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM0/%
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/MemMang/heap_1.c
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/croutine.c
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/MemMang/heap_3.c
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/MemMang/heap_2.c
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/MemMang/heap_4.c
 C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/MemMang/heap_5.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/Common/mpu_wrappers.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/Tasking/ARM_CM4F/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91SAM7S/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91SAM7S/lib_AT91SAM7X256.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91SAM7S/portISR.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91FR40008/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91FR40008/portISR.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM7/r0p1/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM4_MPU/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM3_MPU/port.c
-C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM3/port.c
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/Common/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/Tasking/ARM_CM4F/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91SAM7S/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM7_AT91FR40008/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM7/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM4_MPU/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM3_MPU/%
+C_OBJ_FILTER += $(PROJECT_BASE_PATH)/src/portable/GCC/ARM_CM3/%
 
 C_SRC_TEMP := $(filter-out $(C_OBJ_FILTER), $(C_SRC))
 C_OBJ_TEMP = $(patsubst %.c, %.o, $(notdir $(C_SRC_TEMP)))
